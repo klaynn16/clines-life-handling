@@ -3,4 +3,12 @@ import { createPasswordSecurity, setSessionUnlocked } from '../../utils/password
 
 export default function PasswordSetup({ onComplete }) { const [password, setPassword] = useState(''); const [confirm, setConfirm] = useState(''); const [show, setShow] = useState(false); const [error, setError] = useState(''); const submit = async e => { e.preventDefault(); if (password.length < 6) return setError('Password must be at least 6 characters.'); if (password !== confirm) return setError('Passwords do not match.'); await createPasswordSecurity(password); setSessionUnlocked(true); onComplete(); }; return <AuthShell><div className="auth-icon">♡</div><p className="eyebrow">PRIVATE BY DESIGN</p><h1>Welcome to Cline’s Dashboard ♡</h1><p className="auth-subtitle">Create a password to keep your personal dashboard private on this device.</p><form onSubmit={submit} className="auth-form"><PasswordField label="Password" value={password} onChange={setPassword} show={show} setShow={setShow} autoFocus /><PasswordField label="Confirm password" value={confirm} onChange={setConfirm} show={show} setShow={setShow} />{error && <p className="form-error">{error}</p>}<button className="button primary auth-submit" type="submit">Create password</button></form></AuthShell>; }
 export function PasswordField({ label, value, onChange, show, setShow, autoFocus = false }) { return <label className="field password-field"><span>{label}</span><div><input autoFocus={autoFocus} type={show ? 'text' : 'password'} value={value} onChange={e => onChange(e.target.value)} autoComplete="new-password" /><button type="button" className="password-toggle" onClick={() => setShow(!show)} aria-label={show ? 'Hide password' : 'Show password'}>{show ? '◉' : '◌'}</button></div></label>; }
-export function AuthShell({ children }) { return <main className="auth-screen"><section className="auth-card">{children}<small className="auth-footer">Cline’s Life Dashboard · personal offline organizer</small></section></main>; }
+export function AuthShell({ children }) {
+  return (
+    <main className="auth-screen">
+      <section className="auth-card">
+        {children}
+      </section>
+    </main>
+  );
+}
