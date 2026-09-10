@@ -1,0 +1,5 @@
+import { useState } from 'react';
+import { setSessionUnlocked, verifyPassword } from '../../utils/passwordSecurity';
+import { AuthShell, PasswordField } from './PasswordSetup';
+
+export default function PasswordLock({ onUnlock }) { const [password, setPassword] = useState(''); const [show, setShow] = useState(false); const [error, setError] = useState(''); const submit = async e => { e.preventDefault(); const valid = await verifyPassword(password); if (!valid) { setPassword(''); return setError('Incorrect password. Please try again.'); } setSessionUnlocked(true); onUnlock(); }; return <AuthShell><div className="auth-icon lavender">🔒</div><p className="eyebrow">WELCOME BACK</p><h1>Cline’s Dashboard</h1><p className="auth-subtitle">Enter your password to open your personal dashboard.</p><form onSubmit={submit} className="auth-form"><PasswordField label="Password" value={password} onChange={value => { setPassword(value); setError(''); }} show={show} setShow={setShow} autoFocus />{error && <p className="form-error">{error}</p>}<button className="button primary auth-submit" type="submit">Unlock dashboard</button></form></AuthShell>; }
